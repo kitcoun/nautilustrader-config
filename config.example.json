@@ -1,0 +1,89 @@
+{
+    "max_open_trades": 3, // 最大同时开仓数量，默认值：3，可设置1-无限制，建议3-10
+    "stake_currency": "USDT", // 基础交易币种，默认值：BTC，可选：USDT、BTC、ETH等
+    "stake_amount": "unlimited", // 每次交易投入金额，默认值：0.001，可选：数值或"unlimited"按交易所余额和max_open_trades计算
+    "tradable_balance_ratio": 0.99, // 可交易余额比例，默认值：0.99，范围：0.1-1.0
+    "startup_candle_count": 30, // 启动K线数量
+    // ==================== 交易模式设置 ====================
+    "trading_mode": "spot", // 交易模式，默认值："spot"
+    // spot：现货交易（低风险，只能做多，无杠杆，无清算风险）
+    // margin：保证金交易（中等风险，可做空，有利息费用）
+    // futures：期货合约（高风险，可做空，有资金费率，有清算风险）
+    "margin_mode": "isolated", // 保证金模式，默认值：""，仅期货/保证金交易时需要
+    // isolated：逐仓保证金（每个交易对独立保证金账户）
+    // cross：全仓保证金（所有交易对共享保证金账户）
+    // ==================== 时间设置 ====================
+    "timeframe": "5m", // K线周期，默认值："5m"
+    // ==================== 订单超时设置 ====================
+    "unfilledtimeout": {
+        "entry": 10, // 买入订单超时时间，默认值：10（分钟）
+        "exit": 10, // 卖出订单超时时间，默认值：10（分钟）  
+        "exit_timeout_count": 0, // 卖出超时重试次数，默认值：0
+        "unit": "minutes" // 时间单位，默认值："minutes"，可选：minutes/seconds
+    },
+    // ==================== 订单价格设置 ====================
+    "entry_pricing": {
+        "price_side": "same", // 订单簿取价方向，默认值："same"
+        // same：与信号方向相同侧价格，other：与信号相反侧价格，ask：卖方价格，bid：买方价格
+        "use_order_book": true, // 是否使用订单簿，默认值：true
+        "order_book_top": 1, // 订单簿深度层级，默认值：1，范围：1-50
+        "price_last_balance": 0.0, // 最新价格权重，默认值：0.0，范围：0.0-1.0
+        "check_depth_of_market": {
+            "enabled": false, // 是否检查市场深度，默认值：false
+            "bids_to_ask_delta": 1 // 买卖盘深度比例，默认值：1
+        }
+    },
+    "exit_pricing": {
+        "price_side": "same", // 订单簿取价方向，默认值："same"
+        "use_order_book": true, // 是否使用订单簿，默认值：true  
+        "order_book_top": 1, // 订单簿深度层级，默认值：1
+        "price_last_balance": 0.0 // 最新价格权重，默认值：0.0
+    },
+    // ==================== 订单类型设置 ====================
+    "order_types": {
+        "entry": "limit", // 进场订单类型，默认值："limit"
+        "exit": "limit", // 出场订单类型，默认值："limit"
+        "emergency_exit": "market", // 紧急退出订单类型，默认值："market"
+        "force_exit": "market", // 强制退出订单类型，默认值："market"
+        "force_entry": "market", // 强制进场订单类型，默认值："market"
+        "stoploss": "market", // 止损订单类型，默认值："market"
+        // limit：限价单（指定价格，可能不成交），market：市价单（立即成交，可能滑点）
+        "stoploss_on_exchange": false, // 止损单是否放在交易所，默认值：false
+        "stoploss_price_type": "last", // 止损价格类型，默认值："last"
+        // last：最新成交价，mark：标记价格，index：指数价格（仅期货）
+        "stoploss_on_exchange_interval": 60, // 交易所止损检查间隔，默认值：60秒
+        "stoploss_on_exchange_limit_ratio": 0.99 // 止损限价比例，默认值：0.99
+    },
+    // ==================== 订单有效期设置 ====================
+    "order_time_in_force": {
+        "entry": "GTC", // 进场订单有效期，默认值："GTC"
+        "exit": "GTC" // 出场订单有效期，默认值："GTC"
+        // GTC：成交为止，IOC：立即成交否则取消，FOK：全部成交否则取消
+    },
+    "exchange": {
+        "name": "binance",
+        "key": "YOUR_API_KEY",
+        "secret": "YOUR_API_SECRET",
+        "account_type": "usdt_futures",
+        "pair_whitelist": [ // 交易对白名单
+            "ETH/USDT",
+            "BTC/USDT",
+            "LTC/USDT",
+            "XRP/USDT",
+            "BONK/USDT",
+            "SOL/USDT"
+        ],
+        "pair_blacklist": [ // 交易对黑名单，支持正则表达式
+            "BNB/.*", // 排除所有BNB相关交易对
+            ".*UP/.*", // 排除所有杠杆代币
+            ".*DOWN/.*"
+        ]
+    },
+    "logging": {
+        "log_level": "INFO",
+        "log_colors": true
+    },
+    "bot_name": "freqtrade"
+    // "db_url": "sqlite:////freqtrade/user_data/db/tradesv3.sqlite"
+    // --db-url postgresql+psycopg://postgres:AdminSystem!@postgres:5432/PrimeGain
+}
